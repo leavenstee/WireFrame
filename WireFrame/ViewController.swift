@@ -20,11 +20,17 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
       //  let drawVC = DrawViewController()
       //  self.navigationController?.pushViewController(drawVC, animated: true)
         
-        
+        self.setupView()
     }
     
     func setupView() {
+        let flowLayout = UICollectionViewFlowLayout()
+        self.collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: flowLayout)
+        self.collectionView.register(DrawCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
+        self.view.addSubview(collectionView)
     }
     
     
@@ -35,11 +41,24 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        <#code#>
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        <#code#>
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        
+        cell.backgroundColor = .blue
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
+    {
+        return CGSize(width: 200, height: 50)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets
+    {
+        return UIEdgeInsets(top: 100, left: 8, bottom: 5, right: 8)
     }
     
     
