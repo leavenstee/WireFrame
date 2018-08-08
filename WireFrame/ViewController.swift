@@ -7,47 +7,82 @@
 //
 
 import UIKit
+import CoreData
+
+public let navBarHeight : Float =  60.0
+public let statusBarHeight : Float =  30.0
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var collectionView : UICollectionView!
-    var items : [String]!
+    var items : [DrawingBoard]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-      //  let drawVC = DrawViewController()
-      //  self.navigationController?.pushViewController(drawVC, animated: true)
-        
+        self.loadData()
         self.setupView()
     }
     
+    
     func setupView() {
-        let flowLayout = UICollectionViewFlowLayout()
-        self.collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: flowLayout)
-        self.collectionView.register(DrawCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        self.view.backgroundColor = .white
         
-        self.view.addSubview(collectionView)
+        self.navigationController?.addChild(self)
+        
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize = CGSize(width: self.view.frame.width/4, height: self.view.frame.height/4)
+        flowLayout.minimumLineSpacing = 10;
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: CGFloat(statusBarHeight), width: screenSize.width, height: CGFloat(navBarHeight)))
+        let navItem = UINavigationItem(title: "Framer")
+        let doneItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: #selector(add))
+        navItem.rightBarButtonItem = doneItem
+        navBar.setItems([navItem], animated: false)
+        self.view.addSubview(navBar)
+        
+        self.collectionView = UICollectionView(frame: CGRect(x: 0, y: CGFloat(navBarHeight)+CGFloat(navBarHeight), width: self.view.frame.width, height: self.view.frame.height-CGFloat(navBarHeight)), collectionViewLayout: flowLayout)
+        self.collectionView.register(DrawCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        self.collectionView.isScrollEnabled = true
+        self.collectionView.bounces = true;
+        self.collectionView.backgroundColor = .clear
+        self.view.addSubview(self.collectionView)
+    }
+
+    
+    @objc func add() {
+        let db = DrawingBoard()
+        
+        self.items.append(db)
+        self.collectionView.reloadData()
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-       // self.view.backgroundColor = .blue
+      
     }
 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return self.items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! DrawCollectionViewCell
         
-        cell.backgroundColor = .blue
+        
+        if (self.items[indexPath.row].image != nil) {
+            do {
+                cell.setImage(image: self.items[indexPath.row].image)
+                cell.backgroundColor = UIColor(red:0.97, green:0.78, blue:0.44, alpha:0.5)
+            } catch {
+                cell.backgroundColor = UIColor(red:0.97, green:0.78, blue:0.44, alpha:1.0)
+            }
+        }
         return cell
     }
     
@@ -55,12 +90,49 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     {
         return CGSize(width: 200, height: 50)
     }
-    
+
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets
     {
-        return UIEdgeInsets(top: 100, left: 8, bottom: 5, right: 8)
+        return UIEdgeInsets(top: 100, left: 100, bottom: 100, right: 100)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let drawVC = DrawViewController(boardObject: self.items[indexPath.row])
+       
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.type = .fade
+        self.view.window?.layer .add(transition, forKey: "openDrawVC")
+        
+        self.present(drawVC, animated:false, completion:{
+            print("new vc \(self.items[indexPath.row].id)")
+        })
+    }
+    
+    
+    func loadData() {
+        self.items = []
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Boards")
+        //request.predicate = NSPredicate(format: "age = %@", "12")
+        request.returnsObjectsAsFaults = false
+        do {
+            let result = try context.fetch(request)
+            for data in result as! [NSManagedObject] {
+                print(data.value(forKey: "id") as! UUID)
+                
+                let tempObject = DrawingBoard()
+                tempObject.title = data.value(forKey: "title") as? String
+                tempObject.date = data.value(forKey: "date") as? Date
+                tempObject.id = data.value(forKey: "id") as? UUID
+                tempObject.image = UIImage(data: (data.value(forKey: "image") as? Data)!)
+                items.append(tempObject)
+            }
+        } catch {
+            print("Failed")
+        }
+    }
     
    
 }

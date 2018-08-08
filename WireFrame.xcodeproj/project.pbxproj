@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C35892A521192CE70030DF46 /* DrawingBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35892A421192CE70030DF46 /* DrawingBoard.swift */; };
 		C3C2794C210EA3CC00C07CF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C2794B210EA3CC00C07CF0 /* AppDelegate.swift */; };
 		C3C2794E210EA3CD00C07CF0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C2794D210EA3CD00C07CF0 /* ViewController.swift */; };
 		C3C27951210EA3CD00C07CF0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3C2794F210EA3CD00C07CF0 /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C35892A421192CE70030DF46 /* DrawingBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingBoard.swift; sourceTree = "<group>"; };
 		C3C27948210EA3CC00C07CF0 /* WireFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WireFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3C2794B210EA3CC00C07CF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3C2794D210EA3CD00C07CF0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				C3C2794D210EA3CD00C07CF0 /* ViewController.swift */,
 				C3C27962210EB31900C07CF0 /* DrawCollectionViewCell.swift */,
 				C3C27960210EA3E600C07CF0 /* DrawViewController.swift */,
+				C35892A421192CE70030DF46 /* DrawingBoard.swift */,
 				C3C2794F210EA3CD00C07CF0 /* Main.storyboard */,
 				C3C27955210EA3CD00C07CF0 /* Assets.xcassets */,
 				C3C27957210EA3CD00C07CF0 /* LaunchScreen.storyboard */,
@@ -145,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3C27963210EB31900C07CF0 /* DrawCollectionViewCell.swift in Sources */,
+				C35892A521192CE70030DF46 /* DrawingBoard.swift in Sources */,
 				C3C27961210EA3E600C07CF0 /* DrawViewController.swift in Sources */,
 				C3C2794E210EA3CD00C07CF0 /* ViewController.swift in Sources */,
 				C3C2794C210EA3CC00C07CF0 /* AppDelegate.swift in Sources */,

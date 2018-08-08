@@ -9,15 +9,34 @@
 import UIKit
 
 class DrawCollectionViewCell: UICollectionViewCell {
+    var imageView : UIImageView!
+    var title : UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.frame.size = CGSize(width: 50, height: 100)
+        
+        imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height-50))
+        
+        self.addSubview(imageView)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // Override reuses issue 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView = nil;
+        title = nil;
+    }
+    
+    
+    func setImage(image:UIImage) {
+        if (self.imageView != nil) {
+            self.imageView.image = image
+        }
+    }
     
 }
