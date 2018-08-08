@@ -16,8 +16,8 @@ class DrawCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height-50))
-        
         self.addSubview(imageView)
+    
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,11 +32,13 @@ class DrawCollectionViewCell: UICollectionViewCell {
         title = nil;
     }
     
-    
+    // Set Image Method with error Check
     func setImage(image:UIImage) {
         if (self.imageView != nil) {
             self.imageView.image = image
         }
     }
+    
+
     
 }

@@ -12,7 +12,7 @@ import CoreData
 public let navBarHeight : Float =  60.0
 public let statusBarHeight : Float =  30.0
 
-class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate {
     
     var collectionView : UICollectionView!
     var items : [DrawingBoard]!
@@ -50,6 +50,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         self.collectionView.bounces = true;
         self.collectionView.backgroundColor = .clear
         self.view.addSubview(self.collectionView)
+        
+        let lpgr = UILongPressGestureRecognizer(target: self, action: Selector("handleLongPress:"))
+        lpgr.minimumPressDuration = 0.5
+        lpgr.delaysTouchesBegan = true
+        lpgr.delegate = self
+        self.collectionView.addGestureRecognizer(lpgr)
     }
 
     
@@ -73,7 +79,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! DrawCollectionViewCell
-        
         
         if (self.items[indexPath.row].image != nil) {
             do {
@@ -105,11 +110,13 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         self.view.window?.layer .add(transition, forKey: "openDrawVC")
         
         self.present(drawVC, animated:false, completion:{
-            print("new vc \(self.items[indexPath.row].id)")
+         
         })
     }
     
     
+    
+    // Load Data Method
     func loadData() {
         self.items = []
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -134,6 +141,23 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
     
+    
+    func handleLongPress(gestureReconizer: UILongPressGestureRecognizer) {
+        if gestureReconizer.state != UIGestureRecognizer.State.ended {
+            return
+        }
+        
+        let p = gestureReconizer.location(in: self.collectionView)
+        let indexPath = self.collectionView.indexPathForItem(at: p)
+        
+        if let index = indexPath {
+            var cell = self.collectionView.cellForItem(at: index)
+            // do stuff with your cell, for example print the indexPath
+            print(index.row)
+        } else {
+            print("Could not find index path")
+        }
+    }
    
 }
 
