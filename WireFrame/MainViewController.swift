@@ -14,8 +14,11 @@ public let statusBarHeight : Float =  30.0
 
 class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate {
     
-    var collectionView : UICollectionView!
-    var items : [DrawingBoard]!
+    private var items : [DrawingBoard]!
+    
+    // Story Board Hook up
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var addButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +33,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         self.navigationController?.addChild(self)
         
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: self.view.frame.width/4, height: self.view.frame.height/4)
-        flowLayout.minimumLineSpacing = 10;
+   
         
 //        let screenSize: CGRect = UIScreen.main.bounds
 //        let navBar = UINavigationBar(frame: CGRect(x: 0, y: CGFloat(statusBarHeight), width: screenSize.width, height: CGFloat(navBarHeight)))
@@ -43,29 +44,25 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
 //        navBar.setItems([navItem], animated: false)
 //        self.view.addSubview(navBar)
         
-        self.collectionView = UICollectionView(frame: CGRect(x: 0, y: CGFloat(navBarHeight)+CGFloat(navBarHeight), width: self.view.frame.width, height: self.view.frame.height-CGFloat(navBarHeight)), collectionViewLayout: flowLayout)
+       
         self.collectionView.register(DrawCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.isScrollEnabled = true
         self.collectionView.bounces = true;
         self.collectionView.backgroundColor = .clear
-        self.view.addSubview(self.collectionView)
         
-        let lpgr = UILongPressGestureRecognizer(target: self, action: Selector("handleLongPress:"))
-        lpgr.minimumPressDuration = 0.5
-        lpgr.delaysTouchesBegan = true
-        lpgr.delegate = self
-        self.collectionView.addGestureRecognizer(lpgr)
+ 
+       
     }
 
-    
-    @objc func add() {
+    @IBAction func addItem(_ sender: UIBarButtonItem) {
         let db = DrawingBoard()
         
         self.items.append(db)
         self.collectionView.reloadData()
     }
+    
     
     
     override func viewDidAppear(_ animated: Bool) {
