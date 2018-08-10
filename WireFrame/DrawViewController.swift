@@ -80,7 +80,7 @@ class DrawViewController: UIViewController {
         
         let save = UIAlertAction(title: "Save", style: .default) { (action) in
             print("save")
-            let baseVC = ViewController()
+            let baseVC = MainViewController()
             
             self.present(baseVC, animated:true, completion:{
                 print("new vc")

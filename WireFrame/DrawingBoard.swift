@@ -39,26 +39,20 @@ class DrawingBoard: NSObject {
     
     func save() {
         if (!findAndUpdate()){
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let context = appDelegate.persistentContainer.viewContext
-            let entity = NSEntityDescription.entity(forEntityName: "Boards", in: context)
-            let newBoard = NSManagedObject(entity: entity!, insertInto: context)
-        
-        
-            newBoard.setValue(self.title, forKey: "title")
-            newBoard.setValue(self.date, forKey: "date")
-            newBoard.setValue(self.id, forKey: "id")
-            newBoard.setValue(self.image.pngData(), forKey: "image")
-        
-            do {
-                try context.save()
-            } catch {
-                print("Failed saving")
-            }
+            let manager = CoreDataManager.sharedManager
+            
+            let dictionary: Dictionary<String, Any> = [
+                "title" : self.title,
+                "date" : self.date,
+                "id" : self.id,
+                "image" : self.image.pngData()
+                ]
+            
+            manager.saveToEntity(name: "Boards", dictonary: dictionary)
         }
     }
     
-    
+    // TODO Method 
     func findAndUpdate() -> Bool {
         return false
     }

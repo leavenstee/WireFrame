@@ -12,7 +12,7 @@ import CoreData
 public let navBarHeight : Float =  60.0
 public let statusBarHeight : Float =  30.0
 
-class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate {
+class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate {
     
     var collectionView : UICollectionView!
     var items : [DrawingBoard]!
@@ -34,13 +34,14 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         flowLayout.itemSize = CGSize(width: self.view.frame.width/4, height: self.view.frame.height/4)
         flowLayout.minimumLineSpacing = 10;
         
-        let screenSize: CGRect = UIScreen.main.bounds
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: CGFloat(statusBarHeight), width: screenSize.width, height: CGFloat(navBarHeight)))
-        let navItem = UINavigationItem(title: "Framer")
-        let doneItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: #selector(add))
-        navItem.rightBarButtonItem = doneItem
-        navBar.setItems([navItem], animated: false)
-        self.view.addSubview(navBar)
+//        let screenSize: CGRect = UIScreen.main.bounds
+//        let navBar = UINavigationBar(frame: CGRect(x: 0, y: CGFloat(statusBarHeight), width: screenSize.width, height: CGFloat(navBarHeight)))
+//        navBar.prefersLargeTitles = true
+//        let navItem = UINavigationItem(title: "Framer")
+//        let doneItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: #selector(add))
+//        navItem.rightBarButtonItem = doneItem
+//        navBar.setItems([navItem], animated: false)
+//        self.view.addSubview(navBar)
         
         self.collectionView = UICollectionView(frame: CGRect(x: 0, y: CGFloat(navBarHeight)+CGFloat(navBarHeight), width: self.view.frame.width, height: self.view.frame.height-CGFloat(navBarHeight)), collectionViewLayout: flowLayout)
         self.collectionView.register(DrawCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
@@ -81,12 +82,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! DrawCollectionViewCell
         
         if (self.items[indexPath.row].image != nil) {
-            do {
-                cell.setImage(image: self.items[indexPath.row].image)
-                cell.backgroundColor = UIColor(red:0.97, green:0.78, blue:0.44, alpha:0.5)
-            } catch {
-                cell.backgroundColor = UIColor(red:0.97, green:0.78, blue:0.44, alpha:1.0)
-            }
+            cell.setImage(image: self.items[indexPath.row].image)
+            cell.backgroundColor = UIColor(red:0.97, green:0.78, blue:0.44, alpha:0.5)
         }
         return cell
     }
