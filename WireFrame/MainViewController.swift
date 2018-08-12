@@ -27,6 +27,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.setupView()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
     
     func setupView() {
         self.view.backgroundColor = .white
@@ -48,9 +53,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.collectionView.isScrollEnabled = true
         self.collectionView.bounces = true;
         self.collectionView.backgroundColor = .clear
-        
- 
-       
     }
 
     @IBAction func addItem(_ sender: UIBarButtonItem) {
@@ -59,13 +61,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.items.append(db)
         self.collectionView.reloadData()
     }
-    
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-     
-    }
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
