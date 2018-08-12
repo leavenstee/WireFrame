@@ -30,10 +30,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func setupView() {
         self.view.backgroundColor = .white
-        
-        self.navigationController?.addChild(self)
-        
-   
+
         
 //        let screenSize: CGRect = UIScreen.main.bounds
 //        let navBar = UINavigationBar(frame: CGRect(x: 0, y: CGFloat(statusBarHeight), width: screenSize.width, height: CGFloat(navBarHeight)))
@@ -67,9 +64,14 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-      
+     
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.loadData()
+        self.collectionView.reloadData()
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.items.count
@@ -103,9 +105,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         transition.type = .fade
         self.view.window?.layer .add(transition, forKey: "openDrawVC")
         
-        self.present(drawVC, animated:false, completion:{
-         
-        })
+        navigationController?.pushViewController(drawVC, animated: true)
     }
     
     
@@ -116,7 +116,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Boards")
-        //request.predicate = NSPredicate(format: "age = %@", "12")
         request.returnsObjectsAsFaults = false
         do {
             let result = try context.fetch(request)
@@ -134,24 +133,5 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             print("Failed")
         }
     }
-    
-    
-    func handleLongPress(gestureReconizer: UILongPressGestureRecognizer) {
-        if gestureReconizer.state != UIGestureRecognizer.State.ended {
-            return
-        }
-        
-        let p = gestureReconizer.location(in: self.collectionView)
-        let indexPath = self.collectionView.indexPathForItem(at: p)
-        
-        if let index = indexPath {
-            var cell = self.collectionView.cellForItem(at: index)
-            // do stuff with your cell, for example print the indexPath
-            print(index.row)
-        } else {
-            print("Could not find index path")
-        }
-    }
-   
 }
 

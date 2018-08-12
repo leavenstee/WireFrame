@@ -42,7 +42,6 @@ class DrawViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // self.view.backgroundColor = .blue
     }
     
     
@@ -65,7 +64,8 @@ class DrawViewController: UIViewController {
         }
     }
     
-    // Enable detection of shake motion
+    // Enable detection of shake motio
+    
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
             print("Why are you shaking me?")
@@ -80,14 +80,9 @@ class DrawViewController: UIViewController {
         
         let save = UIAlertAction(title: "Save", style: .default) { (action) in
             print("save")
-            let baseVC = MainViewController()
-            
-            self.present(baseVC, animated:true, completion:{
-                print("new vc")
-                self.board.image = self.mainImageView.image
-                
-                self.board.save()
-            })
+            self.board.image = self.mainImageView.image
+            self.board.save()
+            self.navigationController?.popViewController(animated: true)
         }
         
         let delete = UIAlertAction(title: "Delete", style: .default) { (action) in
@@ -103,16 +98,19 @@ class DrawViewController: UIViewController {
         self.menuAlertViewController.addAction(share)
         present(self.menuAlertViewController, animated: true, completion: nil)
     }
-    
+
+}
+
+extension DrawViewController {
     // Override Touches
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override internal func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         swiped = false
         if let touch = touches.first {
             lastPoint = touch.location(in: self.view)
         }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override internal func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         // 6
         swiped = true
         if let touch = touches.first {
@@ -123,7 +121,7 @@ class DrawViewController: UIViewController {
             lastPoint = currentPoint
         }
     }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override internal func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if !swiped {
             // draw a single point
@@ -146,7 +144,6 @@ class DrawViewController: UIViewController {
         // 1
         UIGraphicsBeginImageContext(view.frame.size)
         let context = UIGraphicsGetCurrentContext()
-        
         tempImageView.image?.draw(in:CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height))
         
         // 2
@@ -155,22 +152,16 @@ class DrawViewController: UIViewController {
         
         // 3
         context?.setLineCap(CGLineCap.round)
-        //CGContextSetLineCap(context, kCGLineCapRound)
         context?.setLineWidth(brushWidth)
-        //CGContextSetLineWidth(context, brushWidth)
         context?.setStrokeColor(red: red, green: green, blue: blue, alpha: 1.0)
-        //CGContextSetRGBStrokeColor(context, red, green, blue, 1.0)
         context?.setBlendMode(CGBlendMode.normal)
-        //CGContextSetBlendMode(context, kCGBlendModeNormal)
         
         // 4
         context!.strokePath()
-        //context.setstrokepath
         
         // 5
         tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         tempImageView.alpha = opacity
         UIGraphicsEndImageContext()
     }
-
 }

@@ -73,8 +73,20 @@ class CoreDataManager: NSObject {
      - Returns: A beautiful, brand-new bicycle,
      custom-built just for you.
      */
-    func update(){
+    public func updateItemInEntity(name: String, dictonary:Dictionary<String, Any>) {
+        let context = self.appDelegate.persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: name, in: context)
+        let newBoard = NSManagedObject(entity: entity!, insertInto: context)
         
+        for item in dictonary {
+            newBoard.setValue(item.value, forKey: item.key)
+        }
+        
+        do {
+            try context.save()
+        } catch {
+            print("Failed saving")
+        }
     }
     
     /**
