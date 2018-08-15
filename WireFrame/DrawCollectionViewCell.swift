@@ -9,36 +9,31 @@
 import UIKit
 
 class DrawCollectionViewCell: UICollectionViewCell {
-    var imageView : UIImageView!
-    var title : UILabel!
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height-50))
-        self.addSubview(imageView)
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var tintLayer: UIView!
+    @IBOutlet weak var deleteButton: UIButton!
     
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    // Override reuses issue 
     override func prepareForReuse() {
         super.prepareForReuse()
-        imageView = nil;
-        title = nil;
     }
     
     // Set Image Method with error Check
-    func setImage(image:UIImage) {
+    public func setImage(image:UIImage) {
         if (self.imageView != nil) {
             self.imageView.image = image
         }
     }
     
-
+    public func setCornerRadius(_ num: Float) {
+        self.tintLayer.layer.cornerRadius = 10;
+        self.imageView.layer.cornerRadius = 10;
+        self.contentView.layer.cornerRadius = 10;
+    }
+    
+    @IBAction func deleteButtonAction(_ sender: Any) {
+        
+    }
     
 }

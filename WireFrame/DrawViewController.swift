@@ -74,8 +74,6 @@ class DrawViewController: UIViewController {
     
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
-            print("Why are you shaking me?")
-            // Show Menu
             self.showMenu()
         }
     }
@@ -85,20 +83,20 @@ class DrawViewController: UIViewController {
         self.menuAlertViewController = UIAlertController(title: "Menu", message: nil, preferredStyle: .actionSheet)
         
         let save = UIAlertAction(title: "Save", style: .default) { (action) in
-            print("save")
             self.board.image = self.mainImageView.image
             self.board.save()
             self.navigationController?.popViewController(animated: true)
         }
         
         let delete = UIAlertAction(title: "Delete", style: .default) { (action) in
-            print("delete")
+            self.board.delete()
+            self.navigationController?.popViewController(animated: true)
         }
         
         let share = UIAlertAction(title: "Share", style: .default) { (action) in
-            print("share")
+            print("share") // TODO
         }
-        
+
         self.menuAlertViewController.addAction(save)
         self.menuAlertViewController.addAction(delete)
         self.menuAlertViewController.addAction(share)

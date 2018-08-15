@@ -37,29 +37,34 @@ class DrawingBoard: NSObject {
     }
     
     // TODO docs
-    func save() {
-        if (!findAndUpdate()){
-            let manager = CoreDataManager.sharedManager
-            
-            if self.image.pngData() != nil {
-                let dictionary: Dictionary<String, Any> = [
-                    "title" : self.title,
-                    "date" : self.date,
-                    "id" : self.id,
-                    "image" : self.image.pngData()!
-                ]
-                manager.saveToEntity(name: "Boards", dictonary: dictionary)
-            } else {
-                print("ERROR: No Image data!")
-            }
-
+    public func save() {
+        let manager = CoreDataManager.sharedManager
+        if self.image.pngData() != nil {
+            let dictionary: Dictionary<String, Any> = [
+                "title" : self.title,
+                "date" : self.date,
+                "id" : self.id,
+                "image" : self.image.pngData()!
+            ]
+            manager.saveToEntity(name: "Boards", dictonary: dictionary)
+        } else {
+            print("ERROR: No Image data!")
         }
     }
     
-    // TODO Method 
-    func findAndUpdate() -> Bool {
-       
-        return false
-    }
     
+    public func delete() {
+        let manager = CoreDataManager.sharedManager
+        if self.image.pngData() != nil {
+            let dictionary: Dictionary<String, Any> = [
+                "title" : self.title,
+                "date" : self.date,
+                "id" : self.id,
+                "image" : self.image.pngData()!
+            ]
+            manager.delete(name: "Boards", dictonary: dictionary)
+        } else {
+            print("ERROR: No Image data!")
+        }
+    }
 }
