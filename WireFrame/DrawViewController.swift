@@ -9,13 +9,19 @@
 import UIKit
 
 class DrawViewController: UIViewController {
-    var board: DrawingBoard!
     
+    enum ColorState {
+        case black
+        case white
+    }
+    
+    var board: DrawingBoard!
     var lastPoint = CGPoint.zero
-    var red: CGFloat = 0.0
-    var green: CGFloat = 0.0
-    var blue: CGFloat = 0.0
-    var brushWidth: CGFloat = 5.0
+
+    var state: ColorState!
+    var colorNum: CGFloat = 0.0
+    
+    var brushWidth: CGFloat = 3.0
     var opacity: CGFloat = 1.0
     var swiped = false
     var tempImageView : UIImageView!
@@ -61,6 +67,8 @@ class DrawViewController: UIViewController {
         self.view.addSubview(tempImageView)
         
         self.mainImageView.image = self.board.image
+        
+        self.state = .black
     }
     
     // We are willing to become first responder to get shake motion
@@ -72,7 +80,7 @@ class DrawViewController: UIViewController {
     
     // Enable detection of shake motio
     
-    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
             self.showMenu()
         }
@@ -94,16 +102,51 @@ class DrawViewController: UIViewController {
         }
         
         let share = UIAlertAction(title: "Share", style: .default) { (action) in
-            print("share") // TODO
+            self.showShareSheet()
+        }
+        
+        var penColorSwap : UIAlertAction!
+        
+        switch self.state {
+        case .black?:
+                penColorSwap = UIAlertAction(title: "Erase", style: .default) { (action) in
+                    self.colorNum = 1.0
+                    self.brushWidth = 10.0
+                    self.state = .white
+                }
+        case .white?:
+                penColorSwap = UIAlertAction(title: "Draw", style: .default) { (action) in
+                    self.colorNum = 0.0
+                    self.brushWidth = 3.0
+                    self.state = .black
+                    
+                }
+        case .none:
+            print("NONE")
         }
 
         self.menuAlertViewController.addAction(save)
         self.menuAlertViewController.addAction(delete)
         self.menuAlertViewController.addAction(share)
+        self.menuAlertViewController.addAction(penColorSwap)
         present(self.menuAlertViewController, animated: true, completion: nil)
+    }
+    
+    
+    func showShareSheet() {
+        if let shareImage = self.mainImageView.image {
+            let activityViewController = UIActivityViewController(activityItems: [shareImage], applicationActivities: nil)
+            present(activityViewController, animated: true, completion: nil)
+        } else {
+            print("could not retrieve image")
+        }
     }
 
 }
+
+/**
+ Drawing Ability
+ */
 
 extension DrawViewController {
     // Override Touches
@@ -157,7 +200,7 @@ extension DrawViewController {
         // 3
         context?.setLineCap(CGLineCap.round)
         context?.setLineWidth(brushWidth)
-        context?.setStrokeColor(red: red, green: green, blue: blue, alpha: 1.0)
+        context?.setStrokeColor(red: self.colorNum, green: self.colorNum, blue: self.colorNum, alpha: 1.0)
         context?.setBlendMode(CGBlendMode.normal)
         
         // 4

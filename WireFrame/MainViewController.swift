@@ -25,7 +25,7 @@ class MainViewController: UICollectionViewController, UIGestureRecognizerDelegat
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.loadData()
-        self.setupView()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -33,27 +33,18 @@ class MainViewController: UICollectionViewController, UIGestureRecognizerDelegat
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    
-    func setupView() {
-        self.collectionView.register(DrawCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        self.collectionView.delegate = self
-        self.collectionView.dataSource = self
-        self.collectionView.isScrollEnabled = true
-        self.collectionView.bounces = true;
-    }
 
     @IBAction func addItem(_ sender: UIBarButtonItem) {
         let db = DrawingBoard()
-        
-        self.items.append(db)
-        self.collectionView.reloadData()
+        self.items.insert(db, at: 0)
+        self.collectionView?.reloadData()
     }
 
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.loadData()
-        self.collectionView.reloadData()
+        self.collectionView?.reloadData()
     }
 
     // Load Data Method
@@ -87,7 +78,7 @@ extension MainViewController {
         
         let transition = CATransition()
         transition.duration = 0.5
-        transition.type = .fade
+        transition.type = kCATransitionFade
         self.view.window?.layer.add(transition, forKey: "openDrawVC")
         
         navigationController?.pushViewController(drawVC, animated: true)

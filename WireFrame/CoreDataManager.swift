@@ -101,7 +101,7 @@ class CoreDataManager: NSObject {
                 tempObject.date = data.value(forKey: "date") as? Date
                 tempObject.id = data.value(forKey: "id") as? UUID
                 tempObject.image = UIImage(data: (data.value(forKey: "image") as? Data)!)
-                items.append(tempObject)
+                items.insert(tempObject, at: 0)
             }
         } catch {
             print("Failed")

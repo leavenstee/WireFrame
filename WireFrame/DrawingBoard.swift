@@ -39,12 +39,13 @@ class DrawingBoard: NSObject {
     // TODO docs
     public func save() {
         let manager = CoreDataManager.sharedManager
-        if self.image.pngData() != nil {
+        let imageData = UIImagePNGRepresentation(self.image)
+        if imageData != nil {
             let dictionary: Dictionary<String, Any> = [
                 "title" : self.title,
                 "date" : self.date,
                 "id" : self.id,
-                "image" : self.image.pngData()!
+                "image" : imageData!
             ]
             manager.saveToEntity(name: "Boards", dictonary: dictionary)
         } else {
@@ -55,12 +56,14 @@ class DrawingBoard: NSObject {
     
     public func delete() {
         let manager = CoreDataManager.sharedManager
-        if self.image.pngData() != nil {
+        
+        let imageData = UIImagePNGRepresentation(self.image)
+        if imageData != nil {
             let dictionary: Dictionary<String, Any> = [
                 "title" : self.title,
                 "date" : self.date,
                 "id" : self.id,
-                "image" : self.image.pngData()!
+                "image" : imageData!
             ]
             manager.delete(name: "Boards", dictonary: dictionary)
         } else {
