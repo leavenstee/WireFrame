@@ -12,8 +12,11 @@ import CoreData
 class CoreDataManager: NSObject {
     
     // Private
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
+    private lazy var context : NSManagedObjectContext = {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }()
+
     /**
         Singleton Instance
      */
@@ -30,7 +33,7 @@ class CoreDataManager: NSObject {
      - Returns: nothing
      */
     public func saveToEntity(name: String, dictonary:Dictionary<String, Any>) {
-        let context = self.appDelegate.persistentContainer.viewContext
+    
         let entity = NSEntityDescription.entity(forEntityName: name, in: context)
         
         var managedObject = self.getItemWithID(dictonary["id"] as! UUID, name: name) // Check if we have an object already
@@ -64,7 +67,6 @@ class CoreDataManager: NSObject {
      */
     func delete(name: String, dictonary:Dictionary<String, Any>) {
         let managedObject = self.getItemWithID(dictonary["id"] as! UUID, name: name) // Check if we have an object already
-        let context = self.appDelegate.persistentContainer.viewContext
 
         if (managedObject != nil) {
             do {
@@ -90,7 +92,6 @@ class CoreDataManager: NSObject {
      */
     public func getDataFromTable(_ name: String) -> Array<DrawingBoard> {
         var items : Array<DrawingBoard> = []
-        let context = self.appDelegate.persistentContainer.viewContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: name)
         request.returnsObjectsAsFaults = false
         do {
@@ -122,7 +123,6 @@ class CoreDataManager: NSObject {
      custom-built just for you.
      */
     private func getItemWithID(_ id: UUID, name:String) -> NSManagedObject? {
-        let context = self.appDelegate.persistentContainer.viewContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: name)
         request.returnsObjectsAsFaults = false
         do {
