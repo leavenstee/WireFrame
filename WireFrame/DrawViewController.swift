@@ -140,7 +140,7 @@ class DrawViewController: UIViewController {
         }
         
         let addNavBarLarge = UIAlertAction(title: "Insert Tab Bar", style: .default) { (action) in
-            self.addTabBarWithType(.two)
+            self.addTabBarWithType(.five)
         }
         
 
@@ -244,31 +244,60 @@ extension DrawViewController {
     }
    
     private func addTabBarWithType(_ type: TabBarType) {
-        var firstPoint = CGPoint(x: 0.0, y: self.view.frame.height - 98)
-        var secondPoint = CGPoint(x: self.view.frame.width, y: self.view.frame.height - 98)
+        let tabBarHeightY = self.view.frame.height - 58
+        
+        var firstPoint = CGPoint(x: 0.0, y: tabBarHeightY)
+        var secondPoint = CGPoint(x: self.view.frame.width, y: tabBarHeightY)
         
         self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
         
         switch type {
         case .two: // 1 line
-            firstPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            firstPoint = CGPoint(x: self.view.center.x, y: tabBarHeightY)
             secondPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height)
             
             self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
         case .three: // 2 lines
-            firstPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
-            secondPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            let thirdOfScreen = self.view.frame.width/3
             
+            firstPoint = CGPoint(x: thirdOfScreen, y: tabBarHeightY)
+            secondPoint = CGPoint(x: thirdOfScreen, y: self.view.frame.height)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: thirdOfScreen*2, y: tabBarHeightY)
+            secondPoint = CGPoint(x: thirdOfScreen*2, y: self.view.frame.height)
             self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
         case .four: // 3 lines
-            firstPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
-            secondPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            let fourthOfScreen = self.view.frame.width/4
             
+            firstPoint = CGPoint(x: fourthOfScreen, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fourthOfScreen, y: self.view.frame.height)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: fourthOfScreen*2, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fourthOfScreen*2, y: self.view.frame.height)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: fourthOfScreen*3, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fourthOfScreen*3, y: self.view.frame.height)
             self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
         case .five: // 4 lines
-            firstPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
-            secondPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            let fifthOfScreen = self.view.frame.width/5
             
+            firstPoint = CGPoint(x: fifthOfScreen, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fifthOfScreen, y: self.view.frame.height)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: fifthOfScreen*2, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fifthOfScreen*2, y: self.view.frame.height)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: fifthOfScreen*3, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fifthOfScreen*3, y: self.view.frame.height)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: fifthOfScreen*4, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fifthOfScreen*4, y: self.view.frame.height)
             self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
         default:
             print("dab emoji")
