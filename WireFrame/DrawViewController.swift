@@ -15,6 +15,20 @@ class DrawViewController: UIViewController {
         case white
     }
     
+    enum NavBarType {
+        case iPhoneXRegular
+        case iPhoneXLarge
+        case regular
+        case large
+    }
+    
+    enum TabBarType {
+        case two
+        case three
+        case four
+        case five
+    }
+    
     var board: DrawingBoard!
     var lastPoint = CGPoint.zero
 
@@ -105,8 +119,8 @@ class DrawViewController: UIViewController {
             self.showShareSheet()
         }
         
+        // Pen Color Switch (Black == Write && White == Erase)
         var penColorSwap : UIAlertAction!
-        
         switch self.state {
         case .black?:
                 penColorSwap = UIAlertAction(title: "Erase", style: .default) { (action) in
@@ -124,11 +138,17 @@ class DrawViewController: UIViewController {
         case .none:
             print("NONE")
         }
+        
+        let addNavBarLarge = UIAlertAction(title: "Insert Tab Bar", style: .default) { (action) in
+            self.addTabBarWithType(.two)
+        }
+        
 
         self.menuAlertViewController.addAction(save)
         self.menuAlertViewController.addAction(delete)
         self.menuAlertViewController.addAction(share)
         self.menuAlertViewController.addAction(penColorSwap)
+        self.menuAlertViewController.addAction(addNavBarLarge)
         present(self.menuAlertViewController, animated: true, completion: nil)
     }
     
@@ -187,7 +207,7 @@ extension DrawViewController {
     
     
     // Drawing
-    func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
+   private func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
         // 1
         UIGraphicsBeginImageContext(view.frame.size)
         let context = UIGraphicsGetCurrentContext()
@@ -210,5 +230,48 @@ extension DrawViewController {
         tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         tempImageView.alpha = opacity
         UIGraphicsEndImageContext()
+    }
+    
+    private func addNavigationBarWithType(_ type: NavBarType) {
+        var size : CGFloat = 64.0
+        if (type == .large){
+            size = 88.0
+        }
+        let firstPoint = CGPoint(x: 0.0, y: size)
+        let secondPoint = CGPoint(x: self.view.frame.width, y: size)
+       
+        self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+    }
+   
+    private func addTabBarWithType(_ type: TabBarType) {
+        var firstPoint = CGPoint(x: 0.0, y: self.view.frame.height - 98)
+        var secondPoint = CGPoint(x: self.view.frame.width, y: self.view.frame.height - 98)
+        
+        self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        
+        switch type {
+        case .two: // 1 line
+            firstPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            secondPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height)
+            
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        case .three: // 2 lines
+            firstPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            secondPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        case .four: // 3 lines
+            firstPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            secondPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        case .five: // 4 lines
+            firstPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            secondPoint = CGPoint(x: self.view.center.x, y: self.view.frame.height - 98)
+            
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        default:
+            print("dab emoji")
+        }
     }
 }
