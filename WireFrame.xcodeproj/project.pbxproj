@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C32F39432134C1C800D97D5C /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F39422134C1C800D97D5C /* UIDeviceExtension.swift */; };
 		C35892A521192CE70030DF46 /* DrawingBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35892A421192CE70030DF46 /* DrawingBoard.swift */; };
 		C3A7E81D211D041A00A66EBD /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A7E81C211D041A00A66EBD /* CoreDataManager.swift */; };
 		C3C2794C210EA3CC00C07CF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C2794B210EA3CC00C07CF0 /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C32F39422134C1C800D97D5C /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		C35892A421192CE70030DF46 /* DrawingBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingBoard.swift; sourceTree = "<group>"; };
 		C3A7E81C211D041A00A66EBD /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		C3C27948210EA3CC00C07CF0 /* WireFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WireFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +72,7 @@
 				C3C27960210EA3E600C07CF0 /* DrawViewController.swift */,
 				C35892A421192CE70030DF46 /* DrawingBoard.swift */,
 				C3A7E81C211D041A00A66EBD /* CoreDataManager.swift */,
+				C32F39422134C1C800D97D5C /* UIDeviceExtension.swift */,
 				C3C2794F210EA3CD00C07CF0 /* Main.storyboard */,
 				C3C27955210EA3CD00C07CF0 /* Assets.xcassets */,
 				C3C27957210EA3CD00C07CF0 /* LaunchScreen.storyboard */,
@@ -155,6 +158,7 @@
 				C3C27961210EA3E600C07CF0 /* DrawViewController.swift in Sources */,
 				C3C2794E210EA3CD00C07CF0 /* MainViewController.swift in Sources */,
 				C3C2794C210EA3CC00C07CF0 /* AppDelegate.swift in Sources */,
+				C32F39432134C1C800D97D5C /* UIDeviceExtension.swift in Sources */,
 				C3A7E81D211D041A00A66EBD /* CoreDataManager.swift in Sources */,
 				C3C27954210EA3CD00C07CF0 /* WireFrame.xcdatamodeld in Sources */,
 			);

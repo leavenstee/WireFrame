@@ -15,6 +15,20 @@ class DrawViewController: UIViewController {
         case white
     }
     
+    enum NavBarType {
+        case iPhoneXRegular
+        case iPhoneXLarge
+        case regular
+        case large
+    }
+    
+    enum TabBarType {
+        case two
+        case three
+        case four
+        case five
+    }
+    
     var board: DrawingBoard!
     var lastPoint = CGPoint.zero
 
@@ -42,7 +56,6 @@ class DrawViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
         setupView()
     }
     
@@ -105,32 +118,76 @@ class DrawViewController: UIViewController {
             self.showShareSheet()
         }
         
-        var penColorSwap : UIAlertAction!
-        
-        switch self.state {
-        case .black?:
-                penColorSwap = UIAlertAction(title: "Erase", style: .default) { (action) in
-                    self.colorNum = 1.0
-                    self.brushWidth = 10.0
-                    self.state = .white
-                }
-        case .white?:
-                penColorSwap = UIAlertAction(title: "Draw", style: .default) { (action) in
-                    self.colorNum = 0.0
-                    self.brushWidth = 3.0
-                    self.state = .black
-                    
-                }
-        case .none:
-            print("NONE")
+        let showStyleSheet = UIAlertAction(title: "Style Sheet", style: .default) { (action) in
+           self.showStyleSheet()
         }
-
+        
+        self.menuAlertViewController.addAction(showStyleSheet)
         self.menuAlertViewController.addAction(save)
         self.menuAlertViewController.addAction(delete)
         self.menuAlertViewController.addAction(share)
-        self.menuAlertViewController.addAction(penColorSwap)
+        
         present(self.menuAlertViewController, animated: true, completion: nil)
     }
+    
+    
+    func showStyleSheet(){
+        self.menuAlertViewController = UIAlertController(title: "Style Sheet", message: nil, preferredStyle: .alert)
+        
+        // Pen Color Switch (Black == Write && White == Erase)
+        var penColorSwap : UIAlertAction!
+        switch self.state {
+        case .black?:
+            penColorSwap = UIAlertAction(title: "Erase", style: .default) { (action) in
+                self.colorNum = 1.0
+                self.brushWidth = 10.0
+                self.state = .white
+            }
+        case .white?:
+            penColorSwap = UIAlertAction(title: "Draw", style: .default) { (action) in
+                self.colorNum = 0.0
+                self.brushWidth = 3.0
+                self.state = .black
+                
+            }
+        case .none:
+            print("NONE")
+        }
+        
+        let tabBarTwo = UIAlertAction(title: "Insert 2 Tabbed Bar", style: .default) { (action) in
+            self.addTabBarWithType(.two)
+        }
+        let tabBarThree = UIAlertAction(title: "Insert 3 Tabbed Bar", style: .default) { (action) in
+            self.addTabBarWithType(.three)
+        }
+        let tabBarFour = UIAlertAction(title: "Insert 4 Tabbed Bar", style: .default) { (action) in
+            self.addTabBarWithType(.four)
+        }
+        let tabBarFive = UIAlertAction(title: "Insert 5 Tabbed Bar", style: .default) { (action) in
+            self.addTabBarWithType(.five)
+        }
+        
+        let navBar = UIAlertAction(title: "Navigation Bar", style: .default) { (action) in
+            self.addNavigationBarWithType(.regular)
+        }
+        let navBarLarge = UIAlertAction(title: "Large Navigation Bar", style: .default) { (action) in
+            self.addNavigationBarWithType(.large)
+        }
+        
+        
+        self.menuAlertViewController.addAction(penColorSwap)
+        
+        self.menuAlertViewController.addAction(navBar)
+        self.menuAlertViewController.addAction(navBarLarge)
+        
+        self.menuAlertViewController.addAction(tabBarTwo)
+        self.menuAlertViewController.addAction(tabBarThree)
+        self.menuAlertViewController.addAction(tabBarFour)
+        self.menuAlertViewController.addAction(tabBarFive)
+       
+        present(self.menuAlertViewController, animated: true, completion: nil)
+    }
+    
     
     
     func showShareSheet() {
@@ -175,19 +232,22 @@ extension DrawViewController {
             drawLineFrom(fromPoint: lastPoint, toPoint: lastPoint)
         }
         
+        self.write()
+    }
+    
+    private func write() {
         // Merge tempImageView into mainImageView
         UIGraphicsBeginImageContext(mainImageView.frame.size)
         mainImageView.image?.draw(in: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: CGBlendMode.normal, alpha: 1.0)
         tempImageView.image?.draw(in: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: CGBlendMode.normal, alpha: opacity)
         mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
         tempImageView.image = nil
     }
     
     
     // Drawing
-    func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
+   private func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
         // 1
         UIGraphicsBeginImageContext(view.frame.size)
         let context = UIGraphicsGetCurrentContext()
@@ -210,5 +270,88 @@ extension DrawViewController {
         tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         tempImageView.alpha = opacity
         UIGraphicsEndImageContext()
+    }
+    
+    private func addNavigationBarWithType(_ type: NavBarType) {
+        var size : CGFloat = 64.0
+        if (type == .large){
+            size = 88.0
+        }
+        
+        if(UIDevice.current.screenType == .iPhoneX) {
+            size += 50
+        }
+        
+        let firstPoint = CGPoint(x: 0.0, y: size)
+        let secondPoint = CGPoint(x: self.view.frame.width, y: size)
+       
+        self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        self.write()
+    }
+   
+    private func addTabBarWithType(_ type: TabBarType) {
+        var screenHeight = self.view.frame.height
+        if(UIDevice.current.screenType == .iPhoneX) {
+            screenHeight = screenHeight - 50
+        }
+        let tabBarHeightY = screenHeight - 58
+        var firstPoint = CGPoint(x: 0.0, y: tabBarHeightY)
+        var secondPoint = CGPoint(x: self.view.frame.width, y: tabBarHeightY)
+        
+        self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        
+        switch type {
+        case .two: // 1 line
+            firstPoint = CGPoint(x: self.view.center.x, y: tabBarHeightY)
+            secondPoint = CGPoint(x: self.view.center.x, y: screenHeight)
+            
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        case .three: // 2 lines
+            let thirdOfScreen = self.view.frame.width/3
+            
+            firstPoint = CGPoint(x: thirdOfScreen, y: tabBarHeightY)
+            secondPoint = CGPoint(x: thirdOfScreen, y: screenHeight)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: thirdOfScreen*2, y: tabBarHeightY)
+            secondPoint = CGPoint(x: thirdOfScreen*2, y: screenHeight)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        case .four: // 3 lines
+            let fourthOfScreen = self.view.frame.width/4
+            
+            firstPoint = CGPoint(x: fourthOfScreen, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fourthOfScreen, y: screenHeight)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: fourthOfScreen*2, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fourthOfScreen*2, y: screenHeight)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: fourthOfScreen*3, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fourthOfScreen*3, y: screenHeight)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        case .five: // 4 lines
+            let fifthOfScreen = self.view.frame.width/5
+            
+            firstPoint = CGPoint(x: fifthOfScreen, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fifthOfScreen, y: screenHeight)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: fifthOfScreen*2, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fifthOfScreen*2, y: screenHeight)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: fifthOfScreen*3, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fifthOfScreen*3, y: screenHeight)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            
+            firstPoint = CGPoint(x: fifthOfScreen*4, y: tabBarHeightY)
+            secondPoint = CGPoint(x: fifthOfScreen*4, y: screenHeight)
+            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        default:
+            print("dab emoji")
+        }
+        
+        self.write()
     }
 }

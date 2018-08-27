@@ -13,7 +13,6 @@ class DrawCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var tintLayer: UIView!
-    @IBOutlet weak var deleteButton: UIButton!
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -30,10 +29,6 @@ class DrawCollectionViewCell: UICollectionViewCell {
         self.tintLayer.layer.cornerRadius = 10;
         self.imageView.layer.cornerRadius = 10;
         self.contentView.layer.cornerRadius = 10;
-    }
-    
-    @IBAction func deleteButtonAction(_ sender: Any) {
-        
     }
     
 }
