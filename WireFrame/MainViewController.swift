@@ -27,8 +27,9 @@ class MainViewController: UICollectionViewController, UIGestureRecognizerDelegat
         // is first time on this version
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             print(version)
-            navigationController?.pushViewController(, animated: true)
             
+            
+            self.navigationController?.present((storyboard?.instantiateViewController(withIdentifier: "WhatsNewViewController"))!, animated: true, completion: nil)
         }
 
     }
