@@ -33,16 +33,19 @@ class WhatsNewViewController: UIViewController {
         super.viewDidLoad()
         // New Thing One
         self.imageOne.image = #imageLiteral(resourceName: "drawing")
+        self.imageOne.tintColor = .white
         self.headerOne.text = "Design"
         self.detailOne.text = "Create quick and easy wire frames within seconds"
         
         // New Thing Two
         self.imageTwo.image = #imageLiteral(resourceName: "save-file-option")
+        self.imageTwo.tintColor = .white
         self.headerTwo.text = "Save"
         self.detailTwo.text = "Shake and save your creations to be accessed at a later time"
         
         // New Thing Three
         self.imageThree.image = #imageLiteral(resourceName: "paper-plane")
+        self.imageThree.tintColor = .white
         self.headerThree.text = "Share"
         self.detailThree.text = "Simply select a design, shake and press share to show anyone to your new idea"
     }

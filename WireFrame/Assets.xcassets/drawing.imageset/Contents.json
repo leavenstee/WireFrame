@@ -2,22 +2,25 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "drawing.png",
+      "filename" : "pencil (5).png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "drawing (2).png",
+      "filename" : "pencil (6).png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "drawing (1).png",
+      "filename" : "pencil (7).png",
       "scale" : "3x"
     }
   ],
   "info" : {
     "version" : 1,
     "author" : "xcode"
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
   }
 }
