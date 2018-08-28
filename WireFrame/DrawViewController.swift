@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DrawViewController: UIViewController {
+class DrawViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     
     enum ColorState {
         case black
@@ -127,6 +127,10 @@ class DrawViewController: UIViewController {
         self.menuAlertViewController.addAction(delete)
         self.menuAlertViewController.addAction(share)
         
+        // iPad Stuff so it doesnt crash
+        self.menuAlertViewController.popoverPresentationController?.sourceView = self.view
+        self.menuAlertViewController.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: 100, height: 100)
+        
         present(self.menuAlertViewController, animated: true, completion: nil)
     }
     
@@ -184,6 +188,10 @@ class DrawViewController: UIViewController {
         self.menuAlertViewController.addAction(tabBarThree)
         self.menuAlertViewController.addAction(tabBarFour)
         self.menuAlertViewController.addAction(tabBarFive)
+        
+        // iPad Stuff so it doesnt crash
+        self.menuAlertViewController.popoverPresentationController?.sourceView = self.view
+        self.menuAlertViewController.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: 100, height: 100)
        
         present(self.menuAlertViewController, animated: true, completion: nil)
     }
@@ -200,6 +208,7 @@ class DrawViewController: UIViewController {
     }
 
 }
+
 
 /**
  Drawing Ability
