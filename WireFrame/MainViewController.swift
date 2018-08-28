@@ -19,12 +19,17 @@ class MainViewController: UICollectionViewController, UIGestureRecognizerDelegat
     // Story Board Hook up
     @IBOutlet weak var addItemButton: UIBarButtonItem!
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.loadData()
+        
+        // is first time on this version
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            print(version)
+            navigationController?.pushViewController(, animated: true)
+            
+        }
 
     }
     
