@@ -34,7 +34,7 @@ class WhatsNewViewController: UIViewController {
         // New Thing One
         self.imageOne.image = #imageLiteral(resourceName: "drawing")
         self.headerOne.text = "Design"
-        self.detailOne.text = "Create quick and easy wire frames of any idea within seconds"
+        self.detailOne.text = "Create quick and easy wire frames within seconds"
         
         // New Thing Two
         self.imageTwo.image = #imageLiteral(resourceName: "save-file-option")

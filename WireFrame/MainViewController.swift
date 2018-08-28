@@ -47,7 +47,10 @@ class MainViewController: UICollectionViewController, UIGestureRecognizerDelegat
         self.items.insert(db, at: 0)
         self.collectionView?.reloadData()
     }
-
+    @IBAction func infoButtonAction(_ sender: Any) {
+        self.navigationController?.present((storyboard?.instantiateViewController(withIdentifier: "WhatsNewViewController"))!, animated: true, completion: nil)
+    }
+    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
