@@ -46,6 +46,12 @@ class MainViewController: UICollectionViewController, UIGestureRecognizerDelegat
         let db = DrawingBoard()
         self.items.insert(db, at: 0)
         self.collectionView?.reloadData()
+        let drawVC = DrawViewController(boardObject: self.items[0])
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.type = kCATransitionFade
+        self.view.window?.layer.add(transition, forKey: "openDrawVC")
+        navigationController?.pushViewController(drawVC, animated: true)
     }
     @IBAction func infoButtonAction(_ sender: Any) {
         self.navigationController?.present((storyboard?.instantiateViewController(withIdentifier: "WhatsNewViewController"))!, animated: true, completion: nil)
@@ -68,8 +74,16 @@ class MainViewController: UICollectionViewController, UIGestureRecognizerDelegat
 extension MainViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if (self.items.count == 0) {
+            self.setEmptyMessage("No Save Wireframes!\nPress New To Get Started")
+        } else {
+            self.restore()
+        }
+        
         return self.items.count
     }
+   
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "drawCell", for: indexPath) as! DrawCollectionViewCell
@@ -93,6 +107,22 @@ extension MainViewController {
         self.view.window?.layer.add(transition, forKey: "openDrawVC")
         
         navigationController?.pushViewController(drawVC, animated: true)
+    }
+    
+    func setEmptyMessage(_ message: String) {
+        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: (self.collectionView?.bounds.size.width)!, height: (self.collectionView?.bounds.size.height)!))
+        messageLabel.text = message
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 2;
+        messageLabel.textAlignment = .center;
+        messageLabel.font = UIFont(name: "Helvetica", size: 18)
+        messageLabel.sizeToFit()
+        
+        self.collectionView?.backgroundView = messageLabel;
+    }
+    
+    func restore() {
+        self.collectionView?.backgroundView = nil
     }
     
     
