@@ -76,7 +76,7 @@ extension MainViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if (self.items.count == 0) {
-            self.setEmptyMessage("No Save Wireframes!\nPress New To Get Started")
+            self.setEmptyMessage("No Wireframes Yet!\nPress New To Get Started")
         } else {
             self.restore()
         }

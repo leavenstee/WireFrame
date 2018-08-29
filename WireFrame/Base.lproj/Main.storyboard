@@ -34,29 +34,18 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="J6X-cp-JYT">
                                             <rect key="frame" x="0.0" y="0.0" width="142" height="253"/>
                                         </imageView>
-                                        <view alpha="0.65000000000000002" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IFA-k0-AO4">
+                                        <view alpha="0.75" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IFA-k0-AO4">
                                             <rect key="frame" x="0.0" y="0.0" width="142" height="253"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dc1-km-7ot">
-                                                    <rect key="frame" x="0.0" y="55" width="142" height="50"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="50" id="amv-T2-qRo"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="12"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
                                             <color key="backgroundColor" red="0.59999999999999998" green="0.63137254899999995" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstItem="dc1-km-7ot" firstAttribute="leading" secondItem="IFA-k0-AO4" secondAttribute="leading" id="5kG-W0-nbJ"/>
-                                                <constraint firstItem="dc1-km-7ot" firstAttribute="leading" secondItem="IFA-k0-AO4" secondAttribute="leading" id="6fz-1o-pMy"/>
-                                                <constraint firstAttribute="trailing" secondItem="dc1-km-7ot" secondAttribute="trailing" id="B26-kS-gjZ"/>
-                                                <constraint firstItem="dc1-km-7ot" firstAttribute="leading" secondItem="IFA-k0-AO4" secondAttribute="leading" id="YvW-RM-Hzm"/>
-                                                <constraint firstAttribute="trailing" secondItem="dc1-km-7ot" secondAttribute="trailing" id="kGO-sa-lh3"/>
-                                                <constraint firstAttribute="bottom" secondItem="dc1-km-7ot" secondAttribute="bottom" constant="148" id="qPD-yL-jhL"/>
-                                                <constraint firstAttribute="trailing" secondItem="dc1-km-7ot" secondAttribute="trailing" id="w1J-z8-i79"/>
-                                            </constraints>
                                         </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dc1-km-7ot">
+                                            <rect key="frame" x="0.0" y="101" width="142" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="amv-T2-qRo"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="12"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                 </view>
                                 <constraints>
@@ -68,6 +57,8 @@
                                     <constraint firstItem="IFA-k0-AO4" firstAttribute="top" secondItem="Uvw-gh-N3Y" secondAttribute="top" id="WAC-rj-Fab"/>
                                     <constraint firstAttribute="trailing" secondItem="IFA-k0-AO4" secondAttribute="trailing" id="bKN-6m-JGc"/>
                                     <constraint firstItem="J6X-cp-JYT" firstAttribute="leading" secondItem="Uvw-gh-N3Y" secondAttribute="leading" id="bOe-Ge-VMC"/>
+                                    <constraint firstAttribute="trailing" secondItem="dc1-km-7ot" secondAttribute="trailing" id="blA-A1-uQd"/>
+                                    <constraint firstItem="dc1-km-7ot" firstAttribute="leading" secondItem="Uvw-gh-N3Y" secondAttribute="leading" id="dAz-6r-4Xl"/>
                                     <constraint firstItem="J6X-cp-JYT" firstAttribute="top" secondItem="Uvw-gh-N3Y" secondAttribute="top" id="fKB-Pe-WMV"/>
                                     <constraint firstAttribute="trailing" secondItem="IFA-k0-AO4" secondAttribute="trailing" id="ibz-gP-XZf"/>
                                     <constraint firstAttribute="trailing" secondItem="IFA-k0-AO4" secondAttribute="trailing" id="kdw-Rk-om1"/>

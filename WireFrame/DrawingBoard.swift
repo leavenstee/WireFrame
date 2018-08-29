@@ -24,7 +24,7 @@ class DrawingBoard: NSObject {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let myString = formatter.string(from: self.date)
         let yourDate = formatter.date(from: myString)
-        formatter.dateFormat = "dd-MMM-yyyy"
+        formatter.dateFormat = "MM/dd/yyyy"
         let myStringafd = formatter.string(from: yourDate!)
         self.title = String(myStringafd)
         
