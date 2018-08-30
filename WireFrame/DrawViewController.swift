@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DrawViewController: UIViewController, UIPopoverPresentationControllerDelegate {
+class DrawViewController: UIViewController, UIPopoverPresentationControllerDelegate, UIGestureRecognizerDelegate {
     
     enum ColorState {
         case black
@@ -82,6 +82,14 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
         self.mainImageView.image = self.board.image
         
         self.state = .black
+       
+        // Long Press Gestuere
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(sender:)))
+        lpgr.minimumPressDuration = 0.5
+        lpgr.delaysTouchesBegan = true
+        lpgr.delegate = self
+        self.view.addGestureRecognizer(lpgr)
+
     }
     
     // We are willing to become first responder to get shake motion
@@ -93,40 +101,95 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
     
     // Enable detection of shake motio
     
-    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        if motion == .motionShake {
+    @objc func longPressed(sender: UILongPressGestureRecognizer)
+    {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+        }) { (done) in
             self.showMenu()
         }
+
     }
     
     
     func showMenu(){
         self.menuAlertViewController = UIAlertController(title: "Menu", message: nil, preferredStyle: .actionSheet)
         
+        let cancel = UIAlertAction(title: "Close", style: .cancel) { (action) in
+            UIView.animate(withDuration: 0.1, animations: {
+               self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
+                
+            }
+        }
+        
+        // Pen Color Switch (Black == Write && White == Erase)
+        var penColorSwap : UIAlertAction!
+        switch self.state {
+        case .black?:
+            penColorSwap = UIAlertAction(title: "Erase", style: .default) { (action) in
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.view.transform = .init(translationX: 0, y: 0)
+                }) { (done) in
+                self.colorNum = 1.0
+                self.brushWidth = 10.0
+                self.state = .white
+                }
+            }
+        case .white?:
+            penColorSwap = UIAlertAction(title: "Draw", style: .default) { (action) in
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.view.transform = .init(translationX: 0, y: 0)
+                }) { (done) in
+                self.colorNum = 0.0
+                self.brushWidth = 3.0
+                self.state = .black
+                }
+                
+            }
+        case .none:
+            print("NONE")
+        }
+        
         let save = UIAlertAction(title: "Save", style: .default) { (action) in
-            self.board.image = self.mainImageView.image
-            self.board.save()
-            self.navigationController?.popViewController(animated: true)
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
+                self.board.image = self.mainImageView.image
+                self.board.save()
+                self.navigationController?.popViewController(animated: true)
+            }
         }
         
         let delete = UIAlertAction(title: "Delete", style: .default) { (action) in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
             self.board.delete()
             self.navigationController?.popViewController(animated: true)
+            }
         }
         
         let share = UIAlertAction(title: "Share", style: .default) { (action) in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
             self.showShareSheet()
+            }
         }
         
         let showStyleSheet = UIAlertAction(title: "Style Sheet", style: .default) { (action) in
            self.showStyleSheet()
         }
         
+        self.menuAlertViewController.addAction(penColorSwap)
         self.menuAlertViewController.addAction(showStyleSheet)
         self.menuAlertViewController.addAction(save)
         self.menuAlertViewController.addAction(delete)
         self.menuAlertViewController.addAction(share)
-        
+        self.menuAlertViewController.addAction(cancel)
         // iPad Stuff so it doesnt crash
         self.menuAlertViewController.popoverPresentationController?.sourceView = self.view
         self.menuAlertViewController.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: 100, height: 100)
@@ -138,48 +201,64 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
     func showStyleSheet(){
         self.menuAlertViewController = UIAlertController(title: "Style Sheet", message: nil, preferredStyle: .alert)
         
-        // Pen Color Switch (Black == Write && White == Erase)
-        var penColorSwap : UIAlertAction!
-        switch self.state {
-        case .black?:
-            penColorSwap = UIAlertAction(title: "Erase", style: .default) { (action) in
-                self.colorNum = 1.0
-                self.brushWidth = 10.0
-                self.state = .white
-            }
-        case .white?:
-            penColorSwap = UIAlertAction(title: "Draw", style: .default) { (action) in
-                self.colorNum = 0.0
-                self.brushWidth = 3.0
-                self.state = .black
-                
-            }
-        case .none:
-            print("NONE")
-        }
-        
         let tabBarTwo = UIAlertAction(title: "Insert 2 Tabbed Bar", style: .default) { (action) in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
+                
+            
             self.addTabBarWithType(.two)
+            }
         }
         let tabBarThree = UIAlertAction(title: "Insert 3 Tabbed Bar", style: .default) { (action) in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
+                
             self.addTabBarWithType(.three)
+            }
         }
         let tabBarFour = UIAlertAction(title: "Insert 4 Tabbed Bar", style: .default) { (action) in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
+                
+        
             self.addTabBarWithType(.four)
+            }
         }
         let tabBarFive = UIAlertAction(title: "Insert 5 Tabbed Bar", style: .default) { (action) in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
+                
             self.addTabBarWithType(.five)
+            }
         }
         
         let navBar = UIAlertAction(title: "Navigation Bar", style: .default) { (action) in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
             self.addNavigationBarWithType(.regular)
+            }
         }
         let navBarLarge = UIAlertAction(title: "Large Navigation Bar", style: .default) { (action) in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
             self.addNavigationBarWithType(.large)
+            }
         }
         
+        let cancel = UIAlertAction(title: "Close", style: .cancel) { (action) in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.transform = .init(translationX: 0, y: 0)
+            }) { (done) in
+                
+            }
+        }
         
-        self.menuAlertViewController.addAction(penColorSwap)
         
         self.menuAlertViewController.addAction(navBar)
         self.menuAlertViewController.addAction(navBarLarge)
@@ -188,6 +267,7 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
         self.menuAlertViewController.addAction(tabBarThree)
         self.menuAlertViewController.addAction(tabBarFour)
         self.menuAlertViewController.addAction(tabBarFive)
+        self.menuAlertViewController.addAction(cancel)
         
         // iPad Stuff so it doesnt crash
         self.menuAlertViewController.popoverPresentationController?.sourceView = self.view
@@ -282,6 +362,12 @@ extension DrawViewController {
     }
     
     private func addNavigationBarWithType(_ type: NavBarType) {
+        if self.state == .white {
+            self.colorNum = 0.0
+            self.brushWidth = 3.0
+            self.state = .black
+        }
+        
         var size : CGFloat = 64.0
         if (type == .large){
             size = 88.0
@@ -299,6 +385,13 @@ extension DrawViewController {
     }
    
     private func addTabBarWithType(_ type: TabBarType) {
+        if self.state == .white {
+            self.colorNum = 0.0
+            self.brushWidth = 3.0
+            self.state = .black
+            
+        }
+        
         var screenHeight = self.view.frame.height
         if(UIDevice.current.screenType == .iPhoneX) {
             screenHeight = screenHeight - 50
