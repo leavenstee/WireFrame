@@ -41,13 +41,13 @@ class WhatsNewViewController: UIViewController {
         self.imageTwo.image = #imageLiteral(resourceName: "save-file-option")
         self.imageTwo.tintColor = .white
         self.headerTwo.text = "Save"
-        self.detailTwo.text = "Shake and save your creations to be accessed at a later time"
+        self.detailTwo.text = "Hard press and save your creations to be accessed at a later time"
         
         // New Thing Three
         self.imageThree.image = #imageLiteral(resourceName: "paper-plane")
         self.imageThree.tintColor = .white
         self.headerThree.text = "Share"
-        self.detailThree.text = "Simply select a design, shake and press share to show anyone to your new idea"
+        self.detailThree.text = "Simply select a design, hard press and share to show anyone your new idea"
     }
 
     override func didReceiveMemoryWarning() {
