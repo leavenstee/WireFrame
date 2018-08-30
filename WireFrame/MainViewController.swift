@@ -39,6 +39,7 @@ class MainViewController: UICollectionViewController, UIGestureRecognizerDelegat
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.view.backgroundColor = .lightGray
     }
     
 
