@@ -85,7 +85,7 @@
                                 <action selector="infoButtonAction:" destination="Tst-K1-DFC" id="GTT-wJ-VkD"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="New" id="1vf-hg-eya">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="1vf-hg-eya">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="addItem:" destination="Tst-K1-DFC" id="P3K-A5-R9O"/>
