@@ -126,9 +126,9 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
         
         let cancel = UIAlertAction(title: "Close", style: .cancel) { (action) in
             UIView.animate(withDuration: 0.1, animations: {
-               self.view.transform = .init(translationX: 0, y: 0)
+               self.view.transform = CGAffineTransform(scaleX: 1, y: 1)
             }) { (done) in
-                
+                 self.write()
             }
         }
         
@@ -188,12 +188,12 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
         }
         
         let showStyleSheet = UIAlertAction(title: "Style Sheet", style: .default) { (action) in
-           self.showStyleSheet()
+            self.showStyleSheet()
         }
         
         let importScreen = UIAlertAction(title: "Import Screen", style: .default) { (action) in
             self.checkPermission()
-           self.present(self.imagePicker, animated: true, completion: nil)
+            self.present(self.imagePicker, animated: true, completion: nil)
         }
         
         
@@ -302,6 +302,7 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
     }
     
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        self.view.transform = CGAffineTransform(scaleX: 1, y: 1)
         let chosenImageURL = info[UIImagePickerControllerImageURL] as! URL
     
         guard let data = try? Data(contentsOf: chosenImageURL) else {
@@ -311,8 +312,9 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
         }
         
         let image = UIImage(data: data)
-        self.tempImageView.image = image
-        self.imagePicker.dismiss(animated: true, completion: nil)
+        self.imagePicker.dismiss(animated: true) {
+            self.tempImageView.image = image
+        }
     }
 
     
