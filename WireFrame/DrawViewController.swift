@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import Photos
 
-class DrawViewController: UIViewController, UIPopoverPresentationControllerDelegate, UIGestureRecognizerDelegate {
+class DrawViewController: UIViewController, UIPopoverPresentationControllerDelegate, UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     enum ColorState {
         case black
@@ -42,6 +43,7 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
     var mainImageView : UIImageView!
     var menuButton : UIButton!
     var menuAlertViewController: UIAlertController!
+    var imagePicker: UIImagePickerController!
     
     init(boardObject: DrawingBoard) {
         super.init(nibName: nil, bundle: nil)
@@ -73,6 +75,11 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
     
     func setupView(){
         self.view.backgroundColor = .white
+        
+        self.imagePicker = UIImagePickerController()
+        self.imagePicker.sourceType = .photoLibrary
+        self.imagePicker.delegate = self
+        
         self.tempImageView = UIImageView(frame: self.view.frame)
         self.mainImageView = UIImageView(frame: self.view.frame)
         
@@ -184,7 +191,14 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
            self.showStyleSheet()
         }
         
+        let importScreen = UIAlertAction(title: "Import Screen", style: .default) { (action) in
+            self.checkPermission()
+           self.present(self.imagePicker, animated: true, completion: nil)
+        }
+        
+        
         self.menuAlertViewController.addAction(penColorSwap)
+        self.menuAlertViewController.addAction(importScreen)
         self.menuAlertViewController.addAction(showStyleSheet)
         self.menuAlertViewController.addAction(save)
         self.menuAlertViewController.addAction(delete)
@@ -196,7 +210,7 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
         
         present(self.menuAlertViewController, animated: true, completion: nil)
     }
-    
+   
     
     func showStyleSheet(){
         self.menuAlertViewController = UIAlertController(title: "Style Sheet", message: nil, preferredStyle: .alert)
@@ -286,7 +300,45 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
             print("could not retrieve image")
         }
     }
+    
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let chosenImageURL = info[UIImagePickerControllerImageURL] as! URL
+    
+        guard let data = try? Data(contentsOf: chosenImageURL) else {
+            print("There was an error!")
+            self.imagePicker.dismiss(animated: true, completion: nil)
+            return
+        }
+        
+        let image = UIImage(data: data)
+        self.tempImageView.image = image
+        self.imagePicker.dismiss(animated: true, completion: nil)
+    }
 
+    
+    func checkPermission() {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+        switch photoAuthorizationStatus {
+        case .authorized:
+            print("Access is granted by user")
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization({
+                (newStatus) in
+                print("status is \(newStatus)")
+                if newStatus ==  PHAuthorizationStatus.authorized {
+                    /* do stuff here */
+                    print("success")
+                }
+            })
+            print("It is not determined until now")
+        case .restricted:
+            // same same
+            print("User do not have access to photo album.")
+        case .denied:
+            // same same
+            print("User has denied the permission.")
+        }
+    }
 }
 
 
