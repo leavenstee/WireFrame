@@ -14,6 +14,7 @@ This Project contains the use of a Coredata, Light MVVM Design Pattern, Custom D
 
 ## What's Next?
 
+- Add Screen shots to this repo and update the details
 - Better Drawing Mechanics 
 - More Apple System Control Layouts
 - Tracing of App Screen Shots 
