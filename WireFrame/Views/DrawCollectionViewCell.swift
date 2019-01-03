@@ -18,17 +18,16 @@ class DrawCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
     }
     
-    // Set Image Method with error Check
-    public func setImage(image:UIImage) {
-        if (self.imageView != nil) {
-            self.imageView.image = image
+    func configureCell(withItem item: DrawingBoard) {
+        guard let image = item.image else {
+            fatalError("Image Not Set")
         }
+        
+        guard let title = item.title else {
+            fatalError("Title Not Set")
+        }
+        
+        imageView.image = image
+        label.text = title
     }
-    
-    public func setCornerRadius(_ num: Float) {
-        self.tintLayer.layer.cornerRadius = 10;
-        self.imageView.layer.cornerRadius = 10;
-        self.contentView.layer.cornerRadius = 10;
-    }
-    
 }

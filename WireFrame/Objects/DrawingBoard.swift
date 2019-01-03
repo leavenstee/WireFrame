@@ -33,13 +33,12 @@ class DrawingBoard: NSObject {
         
         // Set IMage
         self.image = UIImage()
-        
     }
     
     // TODO docs
     public func save() {
         let manager = CoreDataManager.sharedManager
-        let imageData = UIImagePNGRepresentation(self.image)
+        let imageData = image.pngData()
         if imageData != nil {
             let dictionary: Dictionary<String, Any> = [
                 "title" : self.title,
@@ -56,8 +55,7 @@ class DrawingBoard: NSObject {
     
     public func delete() {
         let manager = CoreDataManager.sharedManager
-        
-        let imageData = UIImagePNGRepresentation(self.image)
+        let imageData = image.pngData()
         if imageData != nil {
             let dictionary: Dictionary<String, Any> = [
                 "title" : self.title,

@@ -53,18 +53,6 @@ class CoreDataManager: NSObject {
         }
     }
     
-    /**
-     Initializes a new bicycle with the provided parts and specifications.
-     
-     - Parameters:
-     - style: The style of the bicycle
-     - gearing: The gearing of the bicycle
-     - handlebar: The handlebar of the bicycle
-     - frameSize: The frame size of the bicycle, in centimeters
-     
-     - Returns: A beautiful, brand-new bicycle,
-     custom-built just for you.
-     */
     func delete(name: String, dictonary:Dictionary<String, Any>) {
         let managedObject = self.getItemWithID(dictonary["id"] as! UUID, name: name) // Check if we have an object already
 
@@ -78,19 +66,7 @@ class CoreDataManager: NSObject {
         }
     }
     
-    /**
-     Initializes a new bicycle with the provided parts and specifications.
-     
-     - Parameters:
-     - style: The style of the bicycle
-     - gearing: The gearing of the bicycle
-     - handlebar: The handlebar of the bicycle
-     - frameSize: The frame size of the bicycle, in centimeters
-     
-     - Returns: A beautiful, brand-new bicycle,
-     custom-built just for you.
-     */
-    public func getDataFromTable(_ name: String) -> Array<DrawingBoard> {
+    public func getDataFromTable(_ name: String, completion: (Array<DrawingBoard>?, Error?) -> Void) {
         var items : Array<DrawingBoard> = []
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: name)
         request.returnsObjectsAsFaults = false
@@ -105,9 +81,9 @@ class CoreDataManager: NSObject {
                 items.insert(tempObject, at: 0)
             }
         } catch {
-            print("Failed")
+            completion(nil, error)
         }
-        return items
+        completion(items, nil)
     }
     
     /**

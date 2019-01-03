@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C3027AA521DD9DC600A4F46E /* CollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3027AA421DD9DC600A4F46E /* CollectionViewModel.swift */; };
+		C3027AA721DD9E5C00A4F46E /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3027AA621DD9E5C00A4F46E /* MainViewModel.swift */; };
+		C3027AAA21DDA30000A4F46E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3027AA921DDA30000A4F46E /* Constants.swift */; };
 		C32F39432134C1C800D97D5C /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F39422134C1C800D97D5C /* UIDeviceExtension.swift */; };
 		C32F39452134D20300D97D5C /* WhatsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F39442134D20300D97D5C /* WhatsNewViewController.swift */; };
 		C35892A521192CE70030DF46 /* DrawingBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35892A421192CE70030DF46 /* DrawingBoard.swift */; };
@@ -22,6 +25,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C3027AA421DD9DC600A4F46E /* CollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewModel.swift; sourceTree = "<group>"; };
+		C3027AA621DD9E5C00A4F46E /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		C3027AA921DDA30000A4F46E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C32F39422134C1C800D97D5C /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		C32F39442134D20300D97D5C /* WhatsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewViewController.swift; sourceTree = "<group>"; };
 		C35892A421192CE70030DF46 /* DrawingBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingBoard.swift; sourceTree = "<group>"; };
@@ -49,6 +55,98 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C3027A9721DD412B00A4F46E /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				C3027AAF21DDBC3B00A4F46E /* WhatsNew */,
+				C3027AAE21DDBC3200A4F46E /* Draw */,
+				C3027A9D21DD422A00A4F46E /* Main */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		C3027A9921DD414000A4F46E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C3027AA421DD9DC600A4F46E /* CollectionViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C3027A9A21DD414C00A4F46E /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				C3A7E81C211D041A00A66EBD /* CoreDataManager.swift */,
+				C3C27952210EA3CD00C07CF0 /* WireFrame.xcdatamodeld */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		C3027A9B21DD416600A4F46E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C3C27962210EB31900C07CF0 /* DrawCollectionViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C3027A9C21DD417700A4F46E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C32F39422134C1C800D97D5C /* UIDeviceExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C3027A9D21DD422A00A4F46E /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				C3027A9E21DD423A00A4F46E /* ViewModel */,
+				C3C2794D210EA3CD00C07CF0 /* MainViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		C3027A9E21DD423A00A4F46E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C3027AA621DD9E5C00A4F46E /* MainViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C3027AA821DDA2CE00A4F46E /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C3027AA921DDA30000A4F46E /* Constants.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		C3027AAB21DDA71500A4F46E /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				C35892A421192CE70030DF46 /* DrawingBoard.swift */,
+			);
+			path = Objects;
+			sourceTree = "<group>";
+		};
+		C3027AAE21DDBC3200A4F46E /* Draw */ = {
+			isa = PBXGroup;
+			children = (
+				C3C27960210EA3E600C07CF0 /* DrawViewController.swift */,
+			);
+			path = Draw;
+			sourceTree = "<group>";
+		};
+		C3027AAF21DDBC3B00A4F46E /* WhatsNew */ = {
+			isa = PBXGroup;
+			children = (
+				C32F39442134D20300D97D5C /* WhatsNewViewController.swift */,
+			);
+			path = WhatsNew;
+			sourceTree = "<group>";
+		};
 		C3C2793F210EA3CC00C07CF0 = {
 			isa = PBXGroup;
 			children = (
@@ -69,18 +167,17 @@
 			isa = PBXGroup;
 			children = (
 				C3C2794B210EA3CC00C07CF0 /* AppDelegate.swift */,
-				C3C2794D210EA3CD00C07CF0 /* MainViewController.swift */,
-				C3C27962210EB31900C07CF0 /* DrawCollectionViewCell.swift */,
-				C3C27960210EA3E600C07CF0 /* DrawViewController.swift */,
-				C35892A421192CE70030DF46 /* DrawingBoard.swift */,
-				C3A7E81C211D041A00A66EBD /* CoreDataManager.swift */,
-				C32F39422134C1C800D97D5C /* UIDeviceExtension.swift */,
-				C32F39442134D20300D97D5C /* WhatsNewViewController.swift */,
+				C3027AAB21DDA71500A4F46E /* Objects */,
+				C3027A9921DD414000A4F46E /* Models */,
+				C3027A9A21DD414C00A4F46E /* Data */,
+				C3027A9721DD412B00A4F46E /* Screens */,
+				C3027A9B21DD416600A4F46E /* Views */,
+				C3027A9C21DD417700A4F46E /* Extensions */,
+				C3027AA821DDA2CE00A4F46E /* Helpers */,
 				C3C2794F210EA3CD00C07CF0 /* Main.storyboard */,
 				C3C27955210EA3CD00C07CF0 /* Assets.xcassets */,
 				C3C27957210EA3CD00C07CF0 /* LaunchScreen.storyboard */,
 				C3C2795A210EA3CD00C07CF0 /* Info.plist */,
-				C3C27952210EA3CD00C07CF0 /* WireFrame.xcdatamodeld */,
 			);
 			path = WireFrame;
 			sourceTree = "<group>";
@@ -160,11 +257,14 @@
 				C32F39452134D20300D97D5C /* WhatsNewViewController.swift in Sources */,
 				C35892A521192CE70030DF46 /* DrawingBoard.swift in Sources */,
 				C3C27961210EA3E600C07CF0 /* DrawViewController.swift in Sources */,
+				C3027AA521DD9DC600A4F46E /* CollectionViewModel.swift in Sources */,
 				C3C2794E210EA3CD00C07CF0 /* MainViewController.swift in Sources */,
 				C3C2794C210EA3CC00C07CF0 /* AppDelegate.swift in Sources */,
 				C32F39432134C1C800D97D5C /* UIDeviceExtension.swift in Sources */,
 				C3A7E81D211D041A00A66EBD /* CoreDataManager.swift in Sources */,
 				C3C27954210EA3CD00C07CF0 /* WireFrame.xcdatamodeld in Sources */,
+				C3027AA721DD9E5C00A4F46E /* MainViewModel.swift in Sources */,
+				C3027AAA21DDA30000A4F46E /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,8 +9,9 @@
 import UIKit
 import Photos
 
-class DrawViewController: UIViewController, UIPopoverPresentationControllerDelegate, UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class DrawViewController: UIViewController, UIPopoverPresentationControllerDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
     
+    // MARK: Enums
     enum ColorState {
         case black
         case white
@@ -30,24 +31,24 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
         case five
     }
     
-    var board: DrawingBoard!
-    var lastPoint = CGPoint.zero
-
-    var state: ColorState!
-    var colorNum: CGFloat = 0.0
+    // MARK: Public Vars
+    public var board: DrawingBoard!
     
-    var brushWidth: CGFloat = 3.0
-    var opacity: CGFloat = 1.0
-    var swiped = false
-    var tempImageView : UIImageView!
-    var mainImageView : UIImageView!
-    var menuButton : UIButton!
-    var menuAlertViewController: UIAlertController!
-    var imagePicker: UIImagePickerController!
+    // MARK: Private Vars
+    private var lastPoint = CGPoint.zero
+    private var state: ColorState = .black
+    private var colorNum: CGFloat = 0.0
+    private var brushWidth: CGFloat = 3.0
+    private var opacity: CGFloat = 1.0
+    private var swiped = false
+    private var tempImageView : UIImageView!
+    private var mainImageView : UIImageView!
+    private var menuButton : UIButton!
+    private var menuAlertViewController: UIAlertController!
     
     init(boardObject: DrawingBoard) {
         super.init(nibName: nil, bundle: nil)
-        self.board = boardObject
+        board = boardObject
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,39 +58,28 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         setupView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        guard let navigationController = navigationController else {
+            fatalError("Navigation Controller Not Set")
+        }
+        navigationController.setNavigationBarHidden(true, animated: true)
     }
-    
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-    
     
     func setupView(){
-        self.view.backgroundColor = .white
+        view.backgroundColor = .white
+
+        tempImageView = UIImageView(frame: self.view.frame)
+        mainImageView = UIImageView(frame: self.view.frame)
         
-        self.imagePicker = UIImagePickerController()
-        self.imagePicker.sourceType = .photoLibrary
-        self.imagePicker.delegate = self
+        view.addSubview(mainImageView)
+        view.addSubview(tempImageView)
         
-        self.tempImageView = UIImageView(frame: self.view.frame)
-        self.mainImageView = UIImageView(frame: self.view.frame)
-        
-        self.view.addSubview(mainImageView)
-        self.view.addSubview(tempImageView)
-        
-        self.mainImageView.image = self.board.image
-        
-        self.state = .black
-       
+        mainImageView.image = board.image
+     
         // Long Press Gestuere
         let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(sender:)))
         lpgr.minimumPressDuration = 0.5
@@ -124,221 +114,164 @@ class DrawViewController: UIViewController, UIPopoverPresentationControllerDeleg
     func showMenu(){
         self.menuAlertViewController = UIAlertController(title: "Menu", message: nil, preferredStyle: .actionSheet)
         
-        let cancel = UIAlertAction(title: "Close", style: .cancel) { (action) in
+        let cancel = UIAlertAction(title: "Close", style: .cancel) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-               self.view.transform = CGAffineTransform(scaleX: 1, y: 1)
+                self?.view.transform = CGAffineTransform(scaleX: 1, y: 1)
             }) { (done) in
-                 self.write()
+                self?.write()
             }
         }
         
         // Pen Color Switch (Black == Write && White == Erase)
         var penColorSwap : UIAlertAction!
-        switch self.state {
-        case .black?:
-            penColorSwap = UIAlertAction(title: "Erase", style: .default) { (action) in
+
+        switch state {
+        case .black:
+            penColorSwap = UIAlertAction(title: "Erase", style: .default) { [weak self]  (action) in
                 UIView.animate(withDuration: 0.1, animations: {
-                    self.view.transform = .init(translationX: 0, y: 0)
+                    self?.view.transform = .init(translationX: 0, y: 0)
                 }) { (done) in
-                self.colorNum = 1.0
-                self.brushWidth = 10.0
-                self.state = .white
+                    self?.colorNum = 1.0
+                    self?.brushWidth = 10.0
+                    self?.state = .white
                 }
             }
-        case .white?:
-            penColorSwap = UIAlertAction(title: "Draw", style: .default) { (action) in
+        case .white:
+            penColorSwap = UIAlertAction(title: "Draw", style: .default) { [weak self] (action) in
                 UIView.animate(withDuration: 0.1, animations: {
-                    self.view.transform = .init(translationX: 0, y: 0)
+                    self?.view.transform = .init(translationX: 0, y: 0)
                 }) { (done) in
-                self.colorNum = 0.0
-                self.brushWidth = 3.0
-                self.state = .black
+                    self?.colorNum = 0.0
+                    self?.brushWidth = 3.0
+                    self?.state = .black
                 }
-                
             }
-        case .none:
-            print("NONE")
         }
         
-        let save = UIAlertAction(title: "Save", style: .default) { (action) in
+        let save = UIAlertAction(title: "Save", style: .default) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.transform = .init(translationX: 0, y: 0)
+                self?.view.transform = .init(translationX: 0, y: 0)
             }) { (done) in
-                self.board.image = self.mainImageView.image
-                self.board.save()
-                self.navigationController?.popViewController(animated: true)
+                self?.board.image = self?.mainImageView.image
+                self?.board.save()
+                self?.navigationController?.popViewController(animated: true)
             }
         }
         
-        let delete = UIAlertAction(title: "Delete", style: .default) { (action) in
+        let delete = UIAlertAction(title: "Delete", style: .default) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.transform = .init(translationX: 0, y: 0)
+                self?.view.transform = .init(translationX: 0, y: 0)
             }) { (done) in
-            self.board.delete()
-            self.navigationController?.popViewController(animated: true)
+                self?.board.delete()
+                self?.navigationController?.popViewController(animated: true)
             }
         }
         
-        let share = UIAlertAction(title: "Share", style: .default) { (action) in
+        let share = UIAlertAction(title: "Share", style: .default) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.transform = .init(translationX: 0, y: 0)
+                self?.view.transform = .init(translationX: 0, y: 0)
             }) { (done) in
-            self.showShareSheet()
+                self?.showShareSheet()
             }
         }
         
-        let showStyleSheet = UIAlertAction(title: "Style Sheet", style: .default) { (action) in
-            self.showStyleSheet()
+        let showStyleSheet = UIAlertAction(title: "Style Sheet", style: .default) { [weak self]  (action) in
+            self?.showStyleSheet()
         }
-        
-        let importScreen = UIAlertAction(title: "Import Screen", style: .default) { (action) in
-            self.checkPermission()
-            self.present(self.imagePicker, animated: true, completion: nil)
-        }
-        
-        
+    
         self.menuAlertViewController.addAction(penColorSwap)
-        self.menuAlertViewController.addAction(importScreen)
         self.menuAlertViewController.addAction(showStyleSheet)
         self.menuAlertViewController.addAction(save)
         self.menuAlertViewController.addAction(delete)
         self.menuAlertViewController.addAction(share)
         self.menuAlertViewController.addAction(cancel)
+        
         // iPad Stuff so it doesnt crash
         self.menuAlertViewController.popoverPresentationController?.sourceView = self.view
         self.menuAlertViewController.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: 100, height: 100)
         
-        present(self.menuAlertViewController, animated: true, completion: nil)
+        present(menuAlertViewController, animated: true, completion: nil)
     }
    
     
     func showStyleSheet(){
         self.menuAlertViewController = UIAlertController(title: "Style Sheet", message: nil, preferredStyle: .alert)
         
-        let tabBarTwo = UIAlertAction(title: "Insert 2 Tabbed Bar", style: .default) { (action) in
+        let tabBarTwo = UIAlertAction(title: "Insert 2 Tabbed Bar", style: .default) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.transform = .init(translationX: 0, y: 0)
+                self?.view.transform = .init(translationX: 0, y: 0)
             }) { (done) in
-                
-            
-            self.addTabBarWithType(.two)
+                self?.addTabBarWithType(.two)
             }
         }
-        let tabBarThree = UIAlertAction(title: "Insert 3 Tabbed Bar", style: .default) { (action) in
+        let tabBarThree = UIAlertAction(title: "Insert 3 Tabbed Bar", style: .default) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.transform = .init(translationX: 0, y: 0)
+                self?.view.transform = .init(translationX: 0, y: 0)
             }) { (done) in
-                
-            self.addTabBarWithType(.three)
+                self?.addTabBarWithType(.three)
             }
         }
-        let tabBarFour = UIAlertAction(title: "Insert 4 Tabbed Bar", style: .default) { (action) in
+        let tabBarFour = UIAlertAction(title: "Insert 4 Tabbed Bar", style: .default) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.transform = .init(translationX: 0, y: 0)
+                self?.view.transform = .init(translationX: 0, y: 0)
             }) { (done) in
-                
-        
-            self.addTabBarWithType(.four)
+                self?.addTabBarWithType(.four)
             }
         }
-        let tabBarFive = UIAlertAction(title: "Insert 5 Tabbed Bar", style: .default) { (action) in
+        let tabBarFive = UIAlertAction(title: "Insert 5 Tabbed Bar", style: .default) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.transform = .init(translationX: 0, y: 0)
+                self?.view.transform = .init(translationX: 0, y: 0)
             }) { (done) in
-                
-            self.addTabBarWithType(.five)
+                self?.addTabBarWithType(.five)
             }
         }
         
-        let navBar = UIAlertAction(title: "Navigation Bar", style: .default) { (action) in
+        let navBar = UIAlertAction(title: "Navigation Bar", style: .default) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.transform = .init(translationX: 0, y: 0)
+                self?.view.transform = .init(translationX: 0, y: 0)
             }) { (done) in
-            self.addNavigationBarWithType(.regular)
+                self?.addNavigationBarWithType(.regular)
             }
         }
-        let navBarLarge = UIAlertAction(title: "Large Navigation Bar", style: .default) { (action) in
+        let navBarLarge = UIAlertAction(title: "Large Navigation Bar", style: .default) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.transform = .init(translationX: 0, y: 0)
+                self?.view.transform = .init(translationX: 0, y: 0)
             }) { (done) in
-            self.addNavigationBarWithType(.large)
+                self?.addNavigationBarWithType(.large)
             }
         }
         
-        let cancel = UIAlertAction(title: "Close", style: .cancel) { (action) in
+        let cancel = UIAlertAction(title: "Close", style: .cancel) { [weak self]  (action) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.transform = .init(translationX: 0, y: 0)
+                self?.view.transform = .init(translationX: 0, y: 0)
             }) { (done) in
                 
             }
         }
         
-        
-        self.menuAlertViewController.addAction(navBar)
-        self.menuAlertViewController.addAction(navBarLarge)
-        
-        self.menuAlertViewController.addAction(tabBarTwo)
-        self.menuAlertViewController.addAction(tabBarThree)
-        self.menuAlertViewController.addAction(tabBarFour)
-        self.menuAlertViewController.addAction(tabBarFive)
-        self.menuAlertViewController.addAction(cancel)
+        menuAlertViewController.addAction(navBar)
+        menuAlertViewController.addAction(navBarLarge)
+        menuAlertViewController.addAction(tabBarTwo)
+        menuAlertViewController.addAction(tabBarThree)
+        menuAlertViewController.addAction(tabBarFour)
+        menuAlertViewController.addAction(tabBarFive)
+        menuAlertViewController.addAction(cancel)
         
         // iPad Stuff so it doesnt crash
-        self.menuAlertViewController.popoverPresentationController?.sourceView = self.view
-        self.menuAlertViewController.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: 100, height: 100)
+        menuAlertViewController.popoverPresentationController?.sourceView = view
+        menuAlertViewController.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: 100, height: 100)
        
-        present(self.menuAlertViewController, animated: true, completion: nil)
+        present(menuAlertViewController, animated: true, completion: nil)
     }
     
     
     
     func showShareSheet() {
-        if let shareImage = self.mainImageView.image {
+        if let shareImage = mainImageView.image {
             let activityViewController = UIActivityViewController(activityItems: [shareImage], applicationActivities: nil)
             present(activityViewController, animated: true, completion: nil)
         } else {
             print("could not retrieve image")
-        }
-    }
-    
-    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        self.view.transform = CGAffineTransform(scaleX: 1, y: 1)
-        let chosenImageURL = info[UIImagePickerControllerImageURL] as! URL
-    
-        guard let data = try? Data(contentsOf: chosenImageURL) else {
-            print("There was an error!")
-            self.imagePicker.dismiss(animated: true, completion: nil)
-            return
-        }
-        
-        let image = UIImage(data: data)
-        self.imagePicker.dismiss(animated: true) {
-            self.tempImageView.image = image
-        }
-    }
-
-    
-    func checkPermission() {
-        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
-        switch photoAuthorizationStatus {
-        case .authorized:
-            print("Access is granted by user")
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization({
-                (newStatus) in
-                print("status is \(newStatus)")
-                if newStatus ==  PHAuthorizationStatus.authorized {
-                    /* do stuff here */
-                    print("success")
-                }
-            })
-            print("It is not determined until now")
-        case .restricted:
-            // same same
-            print("User do not have access to photo album.")
-        case .denied:
-            // same same
-            print("User has denied the permission.")
         }
     }
 }
@@ -416,10 +349,10 @@ extension DrawViewController {
     }
     
     private func addNavigationBarWithType(_ type: NavBarType) {
-        if self.state == .white {
-            self.colorNum = 0.0
-            self.brushWidth = 3.0
-            self.state = .black
+        if state == .white {
+            colorNum = 0.0
+            brushWidth = 3.0
+            state = .black
         }
         
         var size : CGFloat = 64.0
@@ -434,80 +367,78 @@ extension DrawViewController {
         let firstPoint = CGPoint(x: 0.0, y: size)
         let secondPoint = CGPoint(x: self.view.frame.width, y: size)
        
-        self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
-        self.write()
+        drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+        write()
     }
    
     private func addTabBarWithType(_ type: TabBarType) {
-        if self.state == .white {
-            self.colorNum = 0.0
-            self.brushWidth = 3.0
-            self.state = .black
+        if state == .white {
+            colorNum = 0.0
+            brushWidth = 3.0
+            state = .black
             
         }
         
-        var screenHeight = self.view.frame.height
+        var screenHeight = view.frame.height
         if(UIDevice.current.screenType == .iPhoneX) {
             screenHeight = screenHeight - 50
         }
         let tabBarHeightY = screenHeight - 58
         var firstPoint = CGPoint(x: 0.0, y: tabBarHeightY)
-        var secondPoint = CGPoint(x: self.view.frame.width, y: tabBarHeightY)
+        var secondPoint = CGPoint(x: view.frame.width, y: tabBarHeightY)
         
         self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
         
         switch type {
         case .two: // 1 line
-            firstPoint = CGPoint(x: self.view.center.x, y: tabBarHeightY)
-            secondPoint = CGPoint(x: self.view.center.x, y: screenHeight)
+            firstPoint = CGPoint(x: view.center.x, y: tabBarHeightY)
+            secondPoint = CGPoint(x: view.center.x, y: screenHeight)
             
-            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
         case .three: // 2 lines
-            let thirdOfScreen = self.view.frame.width/3
+            let thirdOfScreen = view.frame.width/3
             
             firstPoint = CGPoint(x: thirdOfScreen, y: tabBarHeightY)
             secondPoint = CGPoint(x: thirdOfScreen, y: screenHeight)
-            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
             
             firstPoint = CGPoint(x: thirdOfScreen*2, y: tabBarHeightY)
             secondPoint = CGPoint(x: thirdOfScreen*2, y: screenHeight)
-            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
         case .four: // 3 lines
-            let fourthOfScreen = self.view.frame.width/4
+            let fourthOfScreen = view.frame.width/4
             
             firstPoint = CGPoint(x: fourthOfScreen, y: tabBarHeightY)
             secondPoint = CGPoint(x: fourthOfScreen, y: screenHeight)
-            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
             
             firstPoint = CGPoint(x: fourthOfScreen*2, y: tabBarHeightY)
             secondPoint = CGPoint(x: fourthOfScreen*2, y: screenHeight)
-            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
             
             firstPoint = CGPoint(x: fourthOfScreen*3, y: tabBarHeightY)
             secondPoint = CGPoint(x: fourthOfScreen*3, y: screenHeight)
-            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
         case .five: // 4 lines
-            let fifthOfScreen = self.view.frame.width/5
+            let fifthOfScreen = view.frame.width/5
             
             firstPoint = CGPoint(x: fifthOfScreen, y: tabBarHeightY)
             secondPoint = CGPoint(x: fifthOfScreen, y: screenHeight)
-            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
             
             firstPoint = CGPoint(x: fifthOfScreen*2, y: tabBarHeightY)
             secondPoint = CGPoint(x: fifthOfScreen*2, y: screenHeight)
-            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
             
             firstPoint = CGPoint(x: fifthOfScreen*3, y: tabBarHeightY)
             secondPoint = CGPoint(x: fifthOfScreen*3, y: screenHeight)
-            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
+            drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
             
             firstPoint = CGPoint(x: fifthOfScreen*4, y: tabBarHeightY)
             secondPoint = CGPoint(x: fifthOfScreen*4, y: screenHeight)
-            self.drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
-        default:
-            print("dab emoji")
+            drawLineFrom(fromPoint: firstPoint, toPoint: secondPoint)
         }
         
-        self.write()
+        write()
     }
 }
